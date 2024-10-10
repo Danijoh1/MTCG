@@ -5,9 +5,9 @@ namespace MTCG.Http
 {
     public class httprequest
     {
-        public httprequest(TcpClient clientSocket)
+        public httprequest(StreamReader reader)
         {
-            reader = new StreamReader(clientSocket.GetStream());
+            
             // ----- 1. Read the HTTP-Request -----
             string? line;
 
