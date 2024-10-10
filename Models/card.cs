@@ -8,5 +8,8 @@ namespace MTCG.Models
 {
     public class card
     {
+        public string name {  get; set; }
+        public int damage { get; set; }
+        public string element { get; set; }
     }
 }

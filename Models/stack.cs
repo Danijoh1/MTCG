@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MTCG.Models
 {
-    internal class stack
+    public class stack
     {
+        public card[] playerstack {  get; set; } 
     }
 }

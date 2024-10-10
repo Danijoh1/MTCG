@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MTCG.Models
 {
-    internal class packages
+    public class packages
     {
+        public card[] package {  get; set; }
     }
 }

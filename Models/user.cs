@@ -10,5 +10,6 @@ namespace MTCG.Models
     {
         public string username {  get; set; }
         public string password { get; set; }
+        public int coins { get; set; }
     }
 }
