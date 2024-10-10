@@ -27,7 +27,9 @@ namespace MTCG.Http
                                     byte[] passwordSource = ASCIIEncoding.ASCII.GetBytes(user.Password);
                                     byte[] passwordHash = MD5.HashData(passwordSource);
                                     database.Add(user.Username, passwordHash);
-                                    response.sendResponse(201, "Created", "");
+                                    string createmessage = "User created";
+                                    string json = JsonConvert.SerializeObject(createmessage);
+                                    response.sendResponse(201, "Created", json);
                                 }
                                 catch (ArgumentException)
                                 {

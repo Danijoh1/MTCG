@@ -8,6 +8,5 @@ namespace MTCG.Models
 {
     public class monstercard :card
     {
-        public string species {  get; set; }
     }
 }
