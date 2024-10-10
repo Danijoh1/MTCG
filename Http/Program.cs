@@ -1,7 +1,21 @@
-﻿using System.Net;
+﻿using MTCG.Http;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
+Console.WriteLine("Our first simple HTTP-Server: http://localhost:10001/");
+var httpserver = new httpserver(IPAddress.Loopback, 10001);
+httpserver.Start();
+
+while (true)
+{
+    var clientSocket = httpserver.AcceptClient();
+    var request = new httprequest(clientSocket);
+    var response = new httpresponse(clientSocket);
+    request.readRequest();
+    response.writeResponse();
+}
+/*
 Console.WriteLine("Our first simple HTTP-Server: http://localhost:10001/");
 
 // ===== I. Start the HTTP-Server =====
@@ -72,4 +86,4 @@ while (true)
     writerAlsoToConsole.WriteLine("<html><body><h1>Hello World!</h1></body></html>");    // the HTTP-content (here we just return a minimalistic HTML Hello-World)
 
     Console.WriteLine("========================================");
-}
+}*/
