@@ -11,12 +11,19 @@ namespace MTCG.Http
     {
         public userendpoint(httprequest request, httpresponse response)
         {
-            
+            handleRequest(request);
             
         }
-        public void handleRequest()
+        public void handleRequest(httprequest request)
         {
+            if(request.method == "GET")
+            {
 
+            }
+            else if(request.method == "POST")
+            {
+
+            }
         }
         public void login()
         {

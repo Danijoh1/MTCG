@@ -1,5 +1,4 @@
 ﻿using System.Net.Sockets;
-using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace MTCG.Http
@@ -15,7 +14,12 @@ namespace MTCG.Http
             // 1.1 first line in HTTP contains the method, path and HTTP version
             line = reader.ReadLine();
             if (line != null)
+            {
                 Console.WriteLine(line);
+                string[] firstLine = line.Split(' ');
+                method = firstLine[0];
+                path = firstLine[1];
+            }
             // 1.2 read the HTTP-headers (in HTTP after the first line, until the empy line)
             int content_length = 0; // we need the content_length later, to be able to read the HTTP-content
             while ((line = reader.ReadLine()) != null)
