@@ -1,6 +1,7 @@
 ﻿using MTCG.Http;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 Console.WriteLine("Our first simple HTTP-Server: http://localhost:10001/");
@@ -9,11 +10,13 @@ httpserver.Start();
 
 while (true)
 {
-    var clientSocket = httpserver.AcceptClient();
-    var request = new httprequest(clientSocket);
-    var response = new httpresponse(clientSocket);
-    request.readRequest();
-    response.writeResponse();
+    TcpClient clientSocket = httpserver.AcceptClient();
+    httprequest request = new httprequest(clientSocket);
+    httpresponse response = new httpresponse(clientSocket);
+    if(request.path == "user")
+    {
+        new userendpoint(request, response);
+    }
 }
 /*
 Console.WriteLine("Our first simple HTTP-Server: http://localhost:10001/");

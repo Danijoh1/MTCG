@@ -9,10 +9,6 @@ namespace MTCG.Http
         public httprequest(TcpClient clientSocket)
         {
             reader = new StreamReader(clientSocket.GetStream());
-        }
-        public StreamReader reader { get; private set; }
-        public void readRequest()
-        {
             // ----- 1. Read the HTTP-Request -----
             string? line;
 
@@ -52,10 +48,14 @@ namespace MTCG.Http
                         break;
                     data.Append(chars, 0, bytesRead);
                 }
-                Console.WriteLine(data.ToString());
-                //return data.ToString();
+                content = data.ToString();
+                Console.WriteLine(content);
             }
 
         }
+        public string method { get; private set; }
+        public string path {  get; private set; }
+        public string content {  get; private set; }
+        public StreamReader reader { get; private set; }
     }
 }

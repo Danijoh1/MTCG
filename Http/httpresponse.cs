@@ -6,11 +6,6 @@ namespace MTCG.Http
     {
         public httpresponse(TcpClient clientSocket) {
             writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
-        }
-        public StreamWriter writer { get; set; }
-        
-        public void writeResponse()
-        {
             // ----- 2. Do the processing -----
             // .... 
 
@@ -26,5 +21,6 @@ namespace MTCG.Http
 
             Console.WriteLine("========================================");
         }
+        public StreamWriter writer {  get; set; }
     }
 }
