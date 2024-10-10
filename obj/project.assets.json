@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\danie\\Documents\\Schule\\Studium\\INF\\3.Semester\\SWEN1\\MTCG\\MTCG.vbproj",
+      "projectUniqueName": "C:\\Users\\danie\\Documents\\Schule\\Studium\\INF\\3.Semester\\SWEN1\\MTCG\\MTCG.csproj",
       "projectName": "MTCG",
-      "projectPath": "C:\\Users\\danie\\Documents\\Schule\\Studium\\INF\\3.Semester\\SWEN1\\MTCG\\MTCG.vbproj",
+      "projectPath": "C:\\Users\\danie\\Documents\\Schule\\Studium\\INF\\3.Semester\\SWEN1\\MTCG\\MTCG.csproj",
       "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\danie\\Documents\\Schule\\Studium\\INF\\3.Semester\\SWEN1\\MTCG\\obj\\",
       "projectStyle": "PackageReference",

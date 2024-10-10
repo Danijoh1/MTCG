@@ -1,0 +1,20 @@
+# Integration-Tests 
+
+
+### a simple GET request
+GET http://localhost:10001/weather
+Accept: application/json
+
+
+### a simple post request
+POST http://localhost:10001/weather
+Content-Type: application/json
+
+{
+    "Id": 1,
+    "Region": "Austria",
+    "City": "Vienna",
+    "Temperature": 24.4
+}
+
+

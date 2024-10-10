@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("MTCG"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+397215b3ba1b039a23def76eee50034ca82d3e8f"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+baed87695c6a54d4a9956380dca01cfc3a1d1216"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("MTCG"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("MTCG"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")> 
