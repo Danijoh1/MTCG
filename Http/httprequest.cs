@@ -60,6 +60,5 @@ namespace MTCG.Http
         public string method { get; private set; }
         public string path {  get; private set; }
         public string content {  get; private set; }
-        public StreamReader reader { get; private set; }
     }
 }
