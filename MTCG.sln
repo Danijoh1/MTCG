@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTCG", "MTCG.csproj", "{CC40F4C7-9AFC-4291-9B2D-4B29A947A780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Tests", "..\MTCG.Tests\MTCG.Tests.csproj", "{A01E14F0-AA84-47AA-96BD-2185A9D306BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{CC40F4C7-9AFC-4291-9B2D-4B29A947A780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC40F4C7-9AFC-4291-9B2D-4B29A947A780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC40F4C7-9AFC-4291-9B2D-4B29A947A780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A01E14F0-AA84-47AA-96BD-2185A9D306BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A01E14F0-AA84-47AA-96BD-2185A9D306BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A01E14F0-AA84-47AA-96BD-2185A9D306BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A01E14F0-AA84-47AA-96BD-2185A9D306BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
