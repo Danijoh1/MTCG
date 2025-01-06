@@ -9,7 +9,7 @@ namespace MTCG.Http.Endpoints
 {
     public class tradingendpoint
     {
-        public tradingendpoint(httprequest request, httpresponse response, Dictionary<string, byte[]> database)
+        public tradingendpoint(httprequest request, httpresponse response)
         {
             if (request.content != null)
             {
@@ -17,14 +17,7 @@ namespace MTCG.Http.Endpoints
                 {
                     if (request.method == "POST")
                     {
-                        if (request.path == "/packages")
-                        {
-
-                        }
-                        else if (request.path == "/transactions/packages")
-                        {
-
-                        }
+                        
                     }
                     else
                     {

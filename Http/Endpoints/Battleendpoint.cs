@@ -17,14 +17,7 @@ namespace MTCG.Http.Endpoints
                 {
                     if (request.method == "POST")
                     {
-                        if (request.path == "/packages")
-                        {
-
-                        }
-                        else if (request.path == "/transactions/packages")
-                        {
-
-                        }
+                        
                     }
                     else
                     {

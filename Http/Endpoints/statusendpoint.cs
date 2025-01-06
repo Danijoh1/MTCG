@@ -9,22 +9,15 @@ namespace MTCG.Http.Endpoints
 {
     public class statusendpoint
     {
-        public statusendpoint(httprequest request, httpresponse response, Dictionary<string, byte[]> database)
-        {
+        public statusendpoint(httprequest request, httpresponse response)
+        { 
             if (request.content != null)
             {
                 try
                 {
                     if (request.method == "POST")
                     {
-                        if (request.path == "/packages")
-                        {
-
-                        }
-                        else if (request.path == "/transactions/packages")
-                        {
-
-                        }
+                        
                     }
                     else
                     {
