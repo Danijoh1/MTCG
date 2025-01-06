@@ -16,15 +16,7 @@ namespace MTCG.Battlelogic
             if (IsSpecial(card1, card2))
             {
                 card1ActualDamage = SpecialDamageCheck(card1, card2);
-                //if (card1ActualDamage == card1.damage)
-                //{
-                //    card1ActualDamage = SpecialDamageCheck(card2, card1);
-                //}
                 card2ActualDamage = SpecialDamageCheck(card2, card1);
-                //if (card2ActualDamage == card2.damage)
-                //{
-                //    card2ActualDamage = SpecialDamageCheck(card1, card2);
-                //}
             }
             else
             {
