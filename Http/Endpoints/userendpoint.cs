@@ -1,17 +1,23 @@
 ﻿using System.Text;
 using MTCG.Models;
+using MTCG.Handlers;
+using MTCG.Repositories;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 
-namespace MTCG.Http
+namespace MTCG.Http.Endpoints
 {
     public class userendpoint
     {
-        public userendpoint(httprequest request, httpresponse response, Dictionary<string, byte[]> database)
+        public userendpoint(httprequest request, httpresponse response)
         {
-            if(request.content != null)
+            
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserHandler handler = new UserHandler(UserRepository);
+            if (request.content != null)
             {
                 try
                 {
@@ -24,18 +30,15 @@ namespace MTCG.Http
                             {
                                 try
                                 {
-                                    byte[] passwordSource = ASCIIEncoding.ASCII.GetBytes(user.Password);
-                                    byte[] passwordHash = MD5.HashData(passwordSource);
-                                    database.Add(user.Username, passwordHash);
+                                    
+                                    handler.AddUser(user);
                                     string createmessage = "User created";
-                                    string json = JsonConvert.SerializeObject(createmessage);
-                                    response.sendResponse(201, "Created", json);
+                                    response.sendResponse(201, createmessage, "");
                                 }
                                 catch (ArgumentException)
                                 {
                                     string error = "A user with that username already exists.";
-                                    string json = JsonConvert.SerializeObject(error);
-                                    response.sendResponse(400, "Bad Request", json);
+                                    response.sendResponse(400, error, "");
                                 }
                             }
                             else
@@ -47,23 +50,13 @@ namespace MTCG.Http
                         {
                             if (user != null)
                             {
-                                byte[] savedHash;
-                                if (database.TryGetValue(user.Username, out savedHash))
+                                user savedUser = handler.GetByUsername(user.Username);
+                                if (savedUser != null)
                                 {
-                                    byte[] passwordSource = ASCIIEncoding.ASCII.GetBytes(user.Password);
-                                    byte[] passwordHash = MD5.HashData(passwordSource);
                                     bool passwortEqual = false;
-                                    if (passwordHash.Length == savedHash.Length)
+                                    if (user.Password == savedUser.Password)
                                     {
-                                        int i = 0;
-                                        while ((i < passwordHash.Length) && (passwordHash[i] == savedHash[i]))
-                                        {
-                                            i += 1;
-                                        }
-                                        if (i == passwordHash.Length)
-                                        {
-                                            passwortEqual = true;
-                                        }
+                                        passwortEqual = true;
                                     }
 
                                     if (passwortEqual == true)
@@ -76,15 +69,13 @@ namespace MTCG.Http
                                     {
 
                                         string error = "username or passwort is wrong.";
-                                        string json = JsonConvert.SerializeObject(error);
-                                        response.sendResponse(400, "Bad Request", json);
+                                        response.sendResponse(400, error, "");
                                     }
                                 }
                                 else
                                 {
                                     string error = "user does not exist.";
-                                    string json = JsonConvert.SerializeObject(error);
-                                    response.sendResponse(404, "Not Found", json);
+                                    response.sendResponse(404, error, "");
                                 }
                             }
                         }
@@ -94,7 +85,7 @@ namespace MTCG.Http
                         response.sendResponse(405, "Method Not Allowed", "");
                     }
                 }
-                catch(JsonReaderException)
+                catch (JsonReaderException)
                 {
                     response.sendResponse(400, "Bad Request", "");
                 }

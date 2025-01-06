@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCG.Models
+namespace MTCG.Trading
 {
-    public class stack
+    public class Trading
     {
-        public List<card> playerstack {  get; set; } 
     }
 }

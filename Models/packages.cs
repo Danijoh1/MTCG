@@ -8,6 +8,11 @@ namespace MTCG.Models
 {
     public class packages
     {
-        public card[] package {  get; set; }
+        public int Id { get; set; }
+        public string cardId1 { get; set; }
+        public string cardId2 { get; set; }
+        public string cardId3 { get; set; }
+        public string cardId4 { get; set; }
+        public string cardId5 { get; set; }
     }
 }

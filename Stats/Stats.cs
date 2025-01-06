@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCG.Models
+namespace MTCG.Stats
 {
-    public class stack
+    internal class Stats
     {
-        public List<card> playerstack {  get; set; } 
     }
 }
