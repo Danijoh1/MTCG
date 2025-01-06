@@ -10,7 +10,7 @@ namespace MTCG.Http.Endpoints
 {
     public class packageendpoint
     {
-        public packageendpoint(httprequest request, httpresponse response, Dictionary<string, byte[]> database)
+        public packageendpoint(httprequest request, httpresponse response)
         {
             if (request.content != null)
             {

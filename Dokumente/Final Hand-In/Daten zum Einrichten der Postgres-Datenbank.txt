@@ -1,0 +1,36 @@
+docker run -d --name mtcgDatabase -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
+docker exec -it mtcgDatabase psql -U user
+CREATE DATABASE mtgcDB;
+
+CREATE TABLE IF NOT EXISTS cards (
+id INT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+damage INT NOT NULL);
+
+CREATE TABLE IF NOT EXISTS packages (
+id INT PRIMARY KEY,
+cardid1 INT NOT NULL,
+cardid2 INT NOT NULL,
+cardid3 INT NOT NULL,
+cardid4 INT NOT NULL,
+cardid5 INT NOT NULL,
+CONSTRAINT package_cardid1 FOREIGN KEY(cardid1)
+        REFERENCES cards(id),
+CONSTRAINT package_cardid2 FOREIGN KEY(cardid2)
+        REFERENCES cards(id),
+CONSTRAINT package_cardid3 FOREIGN KEY(cardid3)
+        REFERENCES cards(id),
+CONSTRAINT package_cardid4 FOREIGN KEY(cardid4)
+        REFERENCES cards(id),
+CONSTRAINT package_cardid5 FOREIGN KEY(cardid5)
+        REFERENCES cards(id));
+
+CREATE TABLE IF NOT EXISTS users (
+id INT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+password VARCHAR(255)NOT NULL,
+coins INT NOT NULL,); 
+deck INT NOT NULL,
+ELO INT NOT NULL,
+CONSTRAINT Deck FOREIGN KEY(deck)
+        REFERENCES deck(id));
