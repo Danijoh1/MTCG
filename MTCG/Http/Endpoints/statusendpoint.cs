@@ -22,17 +22,15 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path == "/stats")
                         {
-                            user user = handler.UserHandler.GetByUsername(request.identity);
-                            response.sendResponse(200, "OK", "");
-                            Console.WriteLine("ELO: " + user.ELO);
-                            Console.WriteLine("Battles fought: " + user.battlesFought);
+                            user user = handler.UserHandler.GetStatsByUsername(request.identity);
+                            string json = JsonConvert.SerializeObject(user);
+                            response.sendResponse(200, "OK", json);
                         }
                         else if (request.path == "/scoreboard")
                         {
                             List<user> list = handler.UserHandler.GetScore();
-                            response.sendResponse(200, "OK", "");
-                            list.ForEach(Console.WriteLine);
-
+                            string json = JsonConvert.SerializeObject(list);
+                            response.sendResponse(200, "OK", json);
                         }
                     }
                     else

@@ -25,8 +25,8 @@ namespace MTCG.Http.Endpoints
                         {
                             user user = handler.UserHandler.GetByUsername(request.identity);
                             handler.CardHandler.GetDeck(user);
-                            response.sendResponse(200, "OK", "");
-                            user.deck.ForEach(Console.WriteLine);
+                            string json = JsonConvert.SerializeObject(user.deck);
+                            response.sendResponse(200, "OK", json);
                         }
                         else if (request.method == "PUT")
                         {

@@ -18,8 +18,8 @@ namespace MTCG.Http.Endpoints
                         {
                             user user = handler.UserHandler.GetByUsername(request.identity);
                             handler.CardHandler.GetStackOfUser(user);
-                            response.sendResponse(200, "OK", "");
-                            user.stack.ForEach(Console.WriteLine);
+                            string json = JsonConvert.SerializeObject(user.stack);
+                            response.sendResponse(200, "OK", json);
                         }
                         else
                         {

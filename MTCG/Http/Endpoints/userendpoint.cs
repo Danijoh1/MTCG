@@ -60,7 +60,7 @@ namespace MTCG.Http.Endpoints
 
                                     if (passwortEqual == true)
                                     {
-                                        string token = "-mtcgToken";
+                                        string token = savedUser.username+"-mtcgToken";
                                         string json = JsonConvert.SerializeObject(token);
                                         response.sendResponse(200, "OK", json);
                                     }
@@ -97,14 +97,9 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path.Contains(request.identity))
                         {
-                            user userinfo = handler.UserHandler.GetByUsername(request.identity);
-                            response.sendResponse(200, "OK", "");
-                            Console.WriteLine("Name: " + userinfo.username);
-                            Console.WriteLine("Coins: " + userinfo.coins);
-                            Console.WriteLine("ELO: " + userinfo.ELO);
-                            Console.WriteLine("Battles fought: " + userinfo.battlesFought);
-                            Console.WriteLine("Image: " + userinfo.image);
-                            Console.WriteLine("Bio: " + userinfo.bio);
+                            user userinfo = handler.UserHandler.GetUserInfoByUsername(request.identity);
+                            string json = JsonConvert.SerializeObject(userinfo);
+                            response.sendResponse(200, "OK", json);
                         }
                         else
                         {

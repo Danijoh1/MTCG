@@ -68,12 +68,61 @@ namespace MTCG.Repositories
             {
                 return new user()
                 {
-                    //id = (int)reader.GetValue(0),
                     username = reader.GetString(1),
                     password = reader.GetString(1),
                     coins = reader.GetInt32(2),
                     ELO = reader.GetInt32(2),
                     battlesFought = reader.GetInt32(2),
+                };
+            }
+            return null;
+        }
+
+        public user? GetStatsByUsername(string name)
+        {
+            if (name == null)
+                throw new ArgumentException("Username must not be null");
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = @"SELECT elo, battles FROM users WHERE name=@name";
+            AddParameterWithValue(command, "name", DbType.String, name);
+
+            using IDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                return new user()
+                {
+                    ELO = reader.GetInt32(2),
+                    battlesFought = reader.GetInt32(2),
+                };
+            }
+            return null;
+        }
+
+        public user? GetUserInfoByUsername(string name)
+        {
+            if (name == null)
+                throw new ArgumentException("Username must not be null");
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = @"SELECT name, password, coins, elo, battles, image, bio FROM users WHERE name=@name";
+            AddParameterWithValue(command, "name", DbType.String, name);
+
+            using IDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                return new user()
+                {
+                    username = reader.GetString(1),
+                    coins = reader.GetInt32(2),
+                    ELO = reader.GetInt32(2),
+                    battlesFought = reader.GetInt32(2),
+                    image = reader.GetString(1),
+                    bio = reader.GetString(1)
                 };
             }
             return null;

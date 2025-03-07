@@ -31,6 +31,14 @@ namespace MTCG.Handlers
         {
            return repository.GetByUsername(name);
         }
+        public user GetUserInfoByUsername(string name)
+        {
+            return repository.GetUserInfoByUsername(name);
+        }
+        public user GetStatsByUsername(string name)
+        {
+            return repository.GetStatsByUsername(name);
+        }
         public void ChangeCoins(user user)
         {
             repository.UpdateCoins(user);
