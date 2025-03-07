@@ -8,6 +8,18 @@ namespace MTCG.Tests
         [SetUp]
         public void Setup()
         {
+            user Player1 = new user();
+            user Player2 = new user();
+            card card1Player1 = new monstercard("test1", "Test1", 5);
+            card card2Player1 = new card();
+            card card3Player1 = new card();
+            card card4Player1 = new card();
+            card card1Player2 = new monstercard("test2", "Test1", 5);
+            card card2Player2 = new card();
+            card card3Player2 = new card();
+            card card4Player2 = new card();
+
+
         }
 
         [Test]
