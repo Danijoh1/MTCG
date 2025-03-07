@@ -15,13 +15,21 @@ while (true)
     using StreamReader reader = new StreamReader(clientSocket.GetStream());
     httprequest request = new httprequest(reader);
     httpresponse response = new httpresponse(writer);
-    if(request.path == "/users" || request.path == "/sessions")
+    if(request.path == "/users" || request.path == "/sessions" || request.path.Contains("/users"))
     {
         userendpoint userendpoint = new userendpoint(request, response);
     }
     else if(request.path == "/packages" || request.path == "/transactions/packages")
     {
         packageendpoint packageendpoint = new packageendpoint(request, response);
+    }
+    else if (request.path == "/cards")
+    {
+        cardendpoint cardendpoint = new cardendpoint(request, response);
+    }
+    else if (request.path == "/deck")
+    {
+        deckendpoint deckendpoint = new deckendpoint(request, response);
     }
     else if(request.path == "/stats"  || request.path == "/scoreboard")
     {

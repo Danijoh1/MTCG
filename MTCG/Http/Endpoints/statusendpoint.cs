@@ -15,9 +15,16 @@ namespace MTCG.Http.Endpoints
             {
                 try
                 {
-                    if (request.method == "POST")
+                    if (request.method == "GET")
                     {
-                        
+                        if (request.path == "/stats")
+                        {
+                             
+                        }
+                        else if (request.path == "/scoreboard")
+                        {
+
+                        }
                     }
                     else
                     {

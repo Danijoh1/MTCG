@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace MTCG.Http
@@ -36,6 +37,15 @@ namespace MTCG.Http
                 {
                     content_length = int.Parse(parts[1].Trim());
                 }
+                else if (parts[0] == "Authorization")
+                {
+                    var author = parts[1].Split("Bearer");
+                    if (author[1].Contains("-mtcgToken"))
+                    {
+                        var identityString = author[1].Split("-");
+                        identity = identityString[0].Trim();
+                    }
+                }
             }
 
             // 1.3 read the body if existing
@@ -60,5 +70,6 @@ namespace MTCG.Http
         public string method { get; private set; }
         public string path {  get; private set; }
         public string content {  get; private set; }
+        public string identity { get; private set; }
     }
 }

@@ -2,6 +2,8 @@
 using System;
 using System.Data;
 using MTCG.Models;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
 
 namespace MTCG.Repositories
 {
@@ -21,30 +23,27 @@ namespace MTCG.Repositories
 
             command.CommandText = "INSERT INTO users (name,password, coins, elo) " +
                 "VALUES (@name, @password, @coins, @elo) RETURNING id";
-            AddParameterWithValue(command, "name", DbType.String, user.Username);
-            AddParameterWithValue(command, "password", DbType.String, user.Password);
+            AddParameterWithValue(command, "name", DbType.String, user.username);
+            AddParameterWithValue(command, "password", DbType.String, user.password);
             AddParameterWithValue(command, "coins", DbType.Int32, user.coins);
             AddParameterWithValue(command, "elo", DbType.Int32, user.ELO);
-            user.Id = (int)(command.ExecuteScalar() ?? 0);
+            user.id = (int)(command.ExecuteScalar() ?? 0);
         }
-        public IEnumerable<user> GetAll()
+        public IEnumerable<user> GetScore()
         {
             List<user> result = null;
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, name, password, coins, elo FROM users";
+            command.CommandText = @"SELECT name, elo FROM users";
 
             using (IDataReader reader = command.ExecuteReader())
                 while (reader.Read())
                 {
                     result.Add(new user()
                     {
-                        Id = reader.GetInt32(0),
-                        Username = reader.GetString(1),
-                        Password = reader.GetString(1),
-                        coins = reader.GetInt32(2),
+                        username = reader.GetString(1),
                         ELO = reader.GetInt32(289)
                     });
                 }
@@ -59,7 +58,7 @@ namespace MTCG.Repositories
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, name, password, coins, elo FROM users WHERE name=@name";
+            command.CommandText = @"SELECT id, name, password, coins, elo, battles FROM users WHERE name=@name";
             AddParameterWithValue(command, "name", DbType.String, name);
 
             using IDataReader reader = command.ExecuteReader();
@@ -67,43 +66,57 @@ namespace MTCG.Repositories
             {
                 return new user()
                 {
-                    Id = reader.GetInt32(0),
-                    Username = reader.GetString(1),
-                    Password = reader.GetString(1),
+                    id = reader.GetInt32(0),
+                    username = reader.GetString(1),
+                    password = reader.GetString(1),
                     coins = reader.GetInt32(2),
-                    ELO = reader.GetInt32(2)
+                    ELO = reader.GetInt32(2),
+                    battlesFought = reader.GetInt32(2)
                 };
             }
             return null;
         }
 
-        public void Update(user user)
+        public void UpdateUserInfo(user user, string name, string bio, string image)
         {
-            if (user.Id == null)
+            if (user.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = "UPDATE person SET name=@name, password=@password, coins=@coins, elo=@elo WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, user.Id);
-            AddParameterWithValue(command, "name", DbType.String, user.Username);
-            AddParameterWithValue(command, "password", DbType.String, user.Password);
+            command.CommandText = "UPDATE users SET name=@name, bio=@bio, image=@image FROM users WHERE id=@id";
+            AddParameterWithValue(command, "name", DbType.String, name);
+            AddParameterWithValue(command, "bio", DbType.String, bio);
+            AddParameterWithValue(command, "image", DbType.String, image);
+            AddParameterWithValue(command, "id", DbType.Int32, user.id);
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateCoins(user user)
+        {
+            if (user.id == null)
+                throw new ArgumentException("Id must not be null");
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = "UPDATE users SET coins=@coinsFROM users WHERE id=@id";
             AddParameterWithValue(command, "coins", DbType.Int32, user.coins);
-            AddParameterWithValue(command, "elo", DbType.Int32, user.ELO);
+            AddParameterWithValue(command, "id", DbType.Int32, user.id);
             command.ExecuteNonQuery();
         }
 
         public void Delete(user user)
         {
-            if (user.Id == null)
+            if (user.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
             command.CommandText = "DELETE FROM users WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, user.Id);
+            AddParameterWithValue(command, "id", DbType.Int32, user.id);
             command.ExecuteNonQuery();
         }
 

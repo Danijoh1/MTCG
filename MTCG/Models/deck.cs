@@ -8,6 +8,6 @@ namespace MTCG.Models
 {
     public class deck
     {
-        public card[] playerdeck {  get; set; }
+        public List<card> playerdeck {  get; set; }
     }
 }

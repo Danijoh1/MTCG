@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using NSubstitute;
+using System.Linq;
 
 
 namespace MTCG.Http.Endpoints
@@ -30,7 +32,7 @@ namespace MTCG.Http.Endpoints
                             {
                                 try
                                 {
-                                    
+
                                     handler.AddUser(user);
                                     string createmessage = "User created";
                                     response.sendResponse(201, createmessage, "");
@@ -50,11 +52,11 @@ namespace MTCG.Http.Endpoints
                         {
                             if (user != null)
                             {
-                                user savedUser = handler.GetByUsername(user.Username);
+                                user savedUser = handler.GetByUsername(user.username);
                                 if (savedUser != null)
                                 {
                                     bool passwortEqual = false;
-                                    if (user.Password == savedUser.Password)
+                                    if (user.password == savedUser.password)
                                     {
                                         passwortEqual = true;
                                     }
@@ -78,6 +80,37 @@ namespace MTCG.Http.Endpoints
                                     response.sendResponse(404, error, "");
                                 }
                             }
+                        }
+                           
+                    }
+                    else if(request.method == "PUT")
+                    {
+                        if (request.path.Contains(request.identity))
+                        {
+                            user userinfo = handler.GetByUsername(request.identity);
+                            handler.UpdateUserInfo(userinfo,user.username,user.bio,user.image);
+                            response.sendResponse(202, "Userdata updated", "");
+                        }
+                        else
+                        {
+                            response.sendResponse(403, "Forbidden", "");
+                        }
+                    else if (request.method == "GET")
+                    {
+                        if (request.path.Contains(request.identity))
+                        {
+                            user userinfo = handler.GetByUsername(request.identity);
+                            response.sendResponse(200, "OK", "");
+                            Console.WriteLine("Name: " + userinfo.username);
+                            Console.WriteLine("Coins: " + userinfo.coins);
+                            Console.WriteLine("ELO: " + userinfo.ELO);
+                            Console.WriteLine("Battles fought: " + userinfo.battlesFought);
+                            Console.WriteLine("Image: " + userinfo.image);
+                            Console.WriteLine("Bio: " + userinfo.bio);
+                        }
+                        else
+                        {
+                            response.sendResponse(403, "Forbidden", "");
                         }
                     }
                     else

@@ -1,11 +1,7 @@
-﻿using MTCG.Models;
-using Npgsql;
+﻿using Npgsql;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MTCG.Models;
 
 namespace MTCG.Repositories
 {
@@ -17,93 +13,107 @@ namespace MTCG.Repositories
         }
         private readonly string connectionString;
 
-        public void Add(card card)
+        public void Add(card card, packages package)
         {
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
 
-            command.CommandText = "INSERT INTO packages (cardId,name,damage) " +
-                "VALUES (@cardId, @name, @damage) RETURNING id";
-            AddParameterWithValue(command, "cardId", DbType.String, card.id);
+            command.CommandText = "INSERT INTO cards (id, name, damage, pid ,deck) " +
+                "VALUES (@id, @name, @damage, @pid, @deck)";
+            AddParameterWithValue(command, "id", DbType.String, card.id);
             AddParameterWithValue(command, "name", DbType.String, card.name);
-            AddParameterWithValue(command, "damage", DbType.Decimal, card.damage);
-            card.dbId = (int)(command.ExecuteScalar() ?? 0);
+            AddParameterWithValue(command, "damage", DbType.String, card.damage);
+            AddParameterWithValue(command, "pid", DbType.Int32, package.id);
+            AddParameterWithValue(command, "deck", DbType.Boolean, false);
         }
-        public IEnumerable<card> GetAll()
+        public List<card> GetStackOfUser(user user)
         {
-            List<card> result = null;
+            List<card> stack = null;
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, cardId,name,damage FROM card";
+            command.CommandText = @"SELECT id, name,damage FROM cards WHERE uid=@uid";
+            AddParameterWithValue(command, "uid", DbType.Int32, user.id);
+            command.ExecuteNonQuery();
 
             using (IDataReader reader = command.ExecuteReader())
                 while (reader.Read())
                 {
-                    result.Add(new card()
+                    stack.Add(new card()
                     {
-                        dbId = reader.GetInt32(0),
                         id = reader.GetString(1),
-                        name = reader.GetString(2),
-                        damage = (float)reader.GetDecimal(1),
+                        name = reader.GetString(1),
+                        damage = reader.GetInt32(0),
                     });
                 }
-            return result;
+            return stack;
         }
 
-        public card? GetById(int? dbId)
+        public void AddOwner(user user, packages package)
         {
-            if (dbId == null)
+            if (package.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, cardId,name,damage FROM card WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, dbId);
+            command.CommandText = "UPDATE cards SET @uid=uid WHERE pid=@pid";
+            AddParameterWithValue(command, "pid", DbType.Int32, package.id);
+            AddParameterWithValue(command, "uid", DbType.Int32, user.id);
+            command.ExecuteNonQuery();
+        }
 
-            using IDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                return new card()
+        public List<card> GetDeck(user user)
+        {
+            List<card> stack = null;
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = @"SELECT id, name,damage FROM cards WHERE uid=@uid and deck=true";
+            AddParameterWithValue(command, "uid", DbType.Int32, user.id);
+            command.ExecuteNonQuery();
+
+            using (IDataReader reader = command.ExecuteReader())
+                while (reader.Read())
                 {
-                    dbId = reader.GetInt32(0),
-                    id = reader.GetString(1),
-                    name = reader.GetString(2),
-                    damage = (float)reader.GetDecimal(1),
-                };
-            }
-            return null;
+                    stack.Add(new card()
+                    {
+                        id = reader.GetString(1),
+                        name = reader.GetString(1),
+                        damage = reader.GetInt32(0),
+                    });
+                }
+            return stack;
         }
 
-        public void Update(card card)
+        public void AddToDeck(user user, card card)
         {
-            if (card.dbId == null)
+            if (user.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = "UPDATE person SET @cardId=cardId,@name=name, @damage=damage WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, card.dbId);
-            AddParameterWithValue(command, "cardId", DbType.String, card.id);
-            AddParameterWithValue(command, "name", DbType.String, card.name);
-            AddParameterWithValue(command, "damage", DbType.Decimal, card.damage);
+            command.CommandText = "UPDATE cards SET @deck=deck WHERE uid=@uid";
+            AddParameterWithValue(command, "uid", DbType.Int32, user.id);
+            AddParameterWithValue(command, "uid", DbType.String, card.id);
+            AddParameterWithValue(command, "deck", DbType.Boolean, true);
             command.ExecuteNonQuery();
         }
 
         public void Delete(card card)
         {
-            if (card.dbId == null)
+            if (card.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = "DELETE FROM card WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, card.dbId);
+            command.CommandText = "DELETE FROM cards WHERE id=@id";
+            AddParameterWithValue(command, "id", DbType.String, card.id);
             command.ExecuteNonQuery();
         }
 

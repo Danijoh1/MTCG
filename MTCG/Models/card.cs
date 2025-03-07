@@ -77,7 +77,6 @@ namespace MTCG.Models
             }
             return Determinedtype;
         }
-        public int dbId { get; set; }
         public string id { get; set; }
         public string name { get; set; }
         public float damage { get; set; }

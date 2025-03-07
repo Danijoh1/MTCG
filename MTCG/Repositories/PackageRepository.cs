@@ -13,102 +13,63 @@ namespace MTCG.Repositories
         }
         private readonly string connectionString;
 
-        public void Add(packages package )
+        public packages Add()
         {
+            packages package = new packages();
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
 
-            command.CommandText = "INSERT INTO packages (cardid1,cardid2, cardid3, cardid4,cardid5) " +
-                "VALUES (@cardid1, @cardid2, @cardid3, @cardid4, @cardid5) RETURNING id";
-            AddParameterWithValue(command, "cardid1", DbType.String, package.cardId1);
-            AddParameterWithValue(command, "cardid2", DbType.String, package.cardId2);
-            AddParameterWithValue(command, "cardid3", DbType.String, package.cardId3);
-            AddParameterWithValue(command, "cardid4", DbType.String, package.cardId4);
-            AddParameterWithValue(command, "cardid5", DbType.String, package.cardId5);
-            package.Id = (int)(command.ExecuteScalar() ?? 0);
+            command.CommandText = "INSERT INTO packages (isSold) Values(@isSold) RETURNING id";
+            AddParameterWithValue(command, "isSold", DbType.Boolean, false);
+            package.id = (int)(command.ExecuteScalar() ?? 0);
+            package.isSold = false;
+            return package;
         }
-        public IEnumerable<packages> GetAll()
+
+        public packages GetUnsoldPackage()
         {
-            List<packages> result = null;
+            packages package = new packages();
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, cardid1,cardid2, cardid3, cardid4,cardid5 FROM packages";
+            command.CommandText = @"SELECT FIRST id FROM packages WHERE isSold = false";
+            command.ExecuteNonQuery();
 
             using (IDataReader reader = command.ExecuteReader())
                 while (reader.Read())
                 {
-                    result.Add(new packages()
-                    {
-                        Id = reader.GetInt32(0),
-                        cardId1 = reader.GetString(1),
-                        cardId2 = reader.GetString(1),
-                        cardId3 = reader.GetString(1),
-                        cardId4 = reader.GetString(1),
-                        cardId5 = reader.GetString(1),
-
-                    });
+                    package.isSold = reader.GetBoolean(1);
+                    package.id = reader.GetInt32(0);
                 }
-            return result;
+            return package;
         }
 
-        public packages? GetById(int? id)
+        public void SellPackage(packages package)
         {
-            if (id == null)
-                throw new ArgumentException("Id must not be null");
+            if (package == null)
+                throw new ArgumentException("Username must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, cardid1,cardid2, cardid3, cardid4,cardid5 FROM packages WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, id);
-
-            using IDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                return new packages()
-                {
-                    Id = reader.GetInt32(0),
-                    cardId1 = reader.GetString(1),
-                    cardId2 = reader.GetString(1),
-                    cardId3 = reader.GetString(1),
-                    cardId4 = reader.GetString(1),
-                    cardId5 = reader.GetString(1)
-                };
-            }
-            return null;
-        }
-
-        public void Update(packages package)
-        {
-            if (package.Id == null)
-                throw new ArgumentException("Id must not be null");
-
-            using IDbConnection connection = new NpgsqlConnection(connectionString);
-            using IDbCommand command = connection.CreateCommand();
-            connection.Open();
-            command.CommandText = "UPDATE person SET @cardid1=cardid1,@cardid2=cardid2, @cardid3=cardid3, @cardid4=cardid4,@cardid5=cardid5 WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, package.Id);
-            AddParameterWithValue(command, "cardid1", DbType.String, package.cardId1);
-            AddParameterWithValue(command, "cardid2", DbType.String, package.cardId2);
-            AddParameterWithValue(command, "cardid3", DbType.String, package.cardId3);
-            AddParameterWithValue(command, "cardid4", DbType.String, package.cardId4);
-            AddParameterWithValue(command, "cardid5", DbType.String, package.cardId5);
+            command.CommandText = "UPDATE packages SET isSold=@isSold WHERE id=@id";
+            AddParameterWithValue(command, "isSold", DbType.Boolean, true);
+            AddParameterWithValue(command, "id", DbType.Int32, package.id);
             command.ExecuteNonQuery();
         }
 
         public void Delete(packages package)
         {
-            if (package.Id == null)
+            if (package.id == null)
                 throw new ArgumentException("Id must not be null");
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
             command.CommandText = "DELETE FROM packages WHERE id=@id";
-            AddParameterWithValue(command, "id", DbType.Int32, package.Id);
+            AddParameterWithValue(command, "id", DbType.Int32, package.id);
             command.ExecuteNonQuery();
         }
 

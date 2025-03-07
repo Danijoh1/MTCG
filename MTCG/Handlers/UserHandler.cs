@@ -19,18 +19,17 @@ namespace MTCG.Handlers
         {
             repository.Add(user);
         }
-
-        public void RetrieveUser(user user)
+        public void UpdateUserInfo(user user,string name, string bio, string image)
         {
-            repository.GetAll().ToList().ForEach(p => Console.WriteLine(p));
-        }
-        public void UpdateUser(user user)
-        {
-            repository.Update(user);
+            repository.UpdateUserInfo(user, name,bio,image);
         }
         public user GetByUsername(string name)
         {
            return repository.GetByUsername(name);
+        }
+        public void ChangeCoins(user user)
+        {
+            repository.UpdateCoins(user);
         }
         public void RemoveUser(user user)
         {
