@@ -17,7 +17,7 @@ namespace MTCG.Http.Endpoints
         public userendpoint(httprequest request, httpresponse response)
         {
             
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             UserHandler handler = new UserHandler(UserRepository);
             if (request.content != null)
             {

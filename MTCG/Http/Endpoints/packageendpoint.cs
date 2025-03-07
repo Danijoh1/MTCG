@@ -15,11 +15,11 @@ namespace MTCG.Http.Endpoints
     {
         public packageendpoint(httprequest request, httpresponse response)
         {
-            PackageRepository PackageRepository = new PackageRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            PackageRepository PackageRepository = new PackageRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             PackageHandler PackageHandler = new PackageHandler(PackageRepository);
-            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             CardHandler CardHandler = new CardHandler(CardRepository);
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             UserHandler UserHandler = new UserHandler(UserRepository);
             if (request.content != null)
             {

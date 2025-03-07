@@ -15,9 +15,9 @@ namespace MTCG.Http.Endpoints
     {
         public deckendpoint(httprequest request, httpresponse response)
         {
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             UserHandler UserHandler = new UserHandler(UserRepository);
-            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             CardHandler CardHandler = new CardHandler(CardRepository);
             if (request.content != null)
             {
@@ -30,16 +30,15 @@ namespace MTCG.Http.Endpoints
                             user user = UserHandler.GetByUsername(request.identity);
                             CardHandler.GetDeck(user);
                             response.sendResponse(200, "OK", "");
-                            user.deck.playerdeck.ForEach(Console.WriteLine);
+                            user.deck.ForEach(Console.WriteLine);
                         }
                         else if (request.method == "PUT")
                         {
                             user user = UserHandler.GetByUsername(request.identity);
 
-                            if (user.deck.playerdeck.Count < 4)
-                            {
-                                List<card> cards = JsonConvert.DeserializeObject<List<card>>(request.content);
-                                if (cards.Count == 4)
+                                List<string> cardstrings = JsonConvert.DeserializeObject<List<string>>(request.content);
+                                
+                                if (cards.Count < 4)
                                 {
                                     CardHandler.AddToDeck(user, cards[0]);
                                     CardHandler.AddToDeck(user, cards[1]);
@@ -51,11 +50,7 @@ namespace MTCG.Http.Endpoints
                                 {
                                     response.sendResponse(400, "Deck already full", "");
                                 }
-                            }
-                            else
-                            {
-                                response.sendResponse(400, "Bad request", "");
-                            }
+                           
                         }
                         else
                         {

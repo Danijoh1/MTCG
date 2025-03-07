@@ -18,8 +18,8 @@ namespace MTCG.Models
         public string password { get; set; }
         public int coins { get; set; }
         public int ELO { get; set; }
-        public deck deck { get; set; }
-        public stack stack {  get; set; }
+        public List<card> deck { get; set; }
+        public List<card> stack {  get; set; }
         public int battlesFought { get; set; }
         public string image { get; set; }
         public string bio {  get; set; }

@@ -21,12 +21,14 @@ namespace MTCG.Repositories
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
 
-            command.CommandText = "INSERT INTO users (name,password, coins, elo) " +
-                "VALUES (@name, @password, @coins, @elo) RETURNING id";
+            command.CommandText = "INSERT INTO users (name,password, coins, elo,battles) " +
+                "VALUES (@name, @password, @coins, @elo, @battles) RETURNING id";
             AddParameterWithValue(command, "name", DbType.String, user.username);
             AddParameterWithValue(command, "password", DbType.String, user.password);
             AddParameterWithValue(command, "coins", DbType.Int32, user.coins);
             AddParameterWithValue(command, "elo", DbType.Int32, user.ELO);
+            AddParameterWithValue(command, "battles", DbType.Int32, 0);
+
             user.id = (int)(command.ExecuteScalar() ?? 0);
         }
         public List<user> GetScore()
@@ -58,7 +60,7 @@ namespace MTCG.Repositories
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT id, name, password, coins, elo, battles FROM users WHERE name=@name";
+            command.CommandText = @"SELECT name, password, coins, elo, battles FROM users WHERE name=@name";
             AddParameterWithValue(command, "name", DbType.String, name);
 
             using IDataReader reader = command.ExecuteReader();
@@ -66,12 +68,12 @@ namespace MTCG.Repositories
             {
                 return new user()
                 {
-                    id = reader.GetInt32(0),
+                    //id = (int)reader.GetValue(0),
                     username = reader.GetString(1),
                     password = reader.GetString(1),
                     coins = reader.GetInt32(2),
                     ELO = reader.GetInt32(2),
-                    battlesFought = reader.GetInt32(2)
+                    battlesFought = reader.GetInt32(2),
                 };
             }
             return null;
@@ -85,7 +87,7 @@ namespace MTCG.Repositories
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = "UPDATE users SET name=@name, bio=@bio, image=@image FROM users WHERE id=@id";
+            command.CommandText = "UPDATE users SET name=@name, bio=@bio, image=@image  WHERE id=@id";
             AddParameterWithValue(command, "name", DbType.String, name);
             AddParameterWithValue(command, "bio", DbType.String, bio);
             AddParameterWithValue(command, "image", DbType.String, image);

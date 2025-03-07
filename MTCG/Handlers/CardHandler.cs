@@ -23,11 +23,11 @@ namespace MTCG.Handlers
         }
         public void GetStackOfUser(user user)
         {
-            user.stack.playerstack = repository.GetStackOfUser(user);
+            user.stack = repository.GetStackOfUser(user);
         }
         public void GetDeck(user user)
         {
-            user.deck.playerdeck = repository.GetDeck(user);
+            user.deck = repository.GetDeck(user);
         }
         public void AddToDeck(user user, card card)
         {

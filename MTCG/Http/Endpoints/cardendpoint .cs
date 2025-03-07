@@ -15,9 +15,9 @@ namespace MTCG.Http.Endpoints
     {
         public cardendpoint(httprequest request, httpresponse response)
         {
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             UserHandler UserHandler = new UserHandler(UserRepository);
-            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             CardHandler CardHandler = new CardHandler(CardRepository);
             if (request.content != null)
             {
@@ -30,7 +30,7 @@ namespace MTCG.Http.Endpoints
                             user user = UserHandler.GetByUsername(request.identity);
                             CardHandler.GetStackOfUser(user);
                             response.sendResponse(200, "OK", "");
-                            user.stack.playerstack.ForEach(Console.WriteLine);
+                            user.stack.ForEach(Console.WriteLine);
                         }
                         else
                         {
