@@ -33,6 +33,10 @@ namespace MTCG.Handlers
         {
             repository.AddToDeck(user, card);
         }
+        public card GetCardById(string id)
+        {
+            return repository.GetCardById(id);
+        }
         public void AddOwner(user user, packages package)
         {
             repository.AddOwner(user, package);

@@ -95,6 +95,20 @@ namespace MTCG.Repositories
             command.ExecuteNonQuery();
         }
 
+        public void UpdateELO(user user)
+        {
+            if (user.id == null)
+                throw new ArgumentException("Id must not be null");
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = "UPDATE users SET ELO=@ELO FROM users WHERE id=@id";
+            AddParameterWithValue(command, "ELO", DbType.Int32, user.ELO);
+            AddParameterWithValue(command, "id", DbType.Int32, user.id);
+            command.ExecuteNonQuery();
+        }
+
         public void UpdateCoins(user user)
         {
             if (user.id == null)

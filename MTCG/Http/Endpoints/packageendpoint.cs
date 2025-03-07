@@ -13,14 +13,8 @@ namespace MTCG.Http.Endpoints
 {
     public class packageendpoint
     {
-        public packageendpoint(httprequest request, httpresponse response)
+        public packageendpoint(httprequest request, httpresponse response, DataHandlers handler)
         {
-            PackageRepository PackageRepository = new PackageRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            PackageHandler PackageHandler = new PackageHandler(PackageRepository);
-            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            CardHandler CardHandler = new CardHandler(CardRepository);
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            UserHandler UserHandler = new UserHandler(UserRepository);
             if (request.content != null)
             {
                 try
@@ -34,12 +28,12 @@ namespace MTCG.Http.Endpoints
                                 List<card> cards = JsonConvert.DeserializeObject<List<card>>(request.content);
                                 if (cards.Count == 5)
                                 {
-                                    packages package = PackageHandler.AddPackage();
-                                    CardHandler.AddCard(cards[0], package);
-                                    CardHandler.AddCard(cards[1], package);
-                                    CardHandler.AddCard(cards[2], package);
-                                    CardHandler.AddCard(cards[3], package);
-                                    CardHandler.AddCard(cards[4], package);
+                                    packages package = handler.PackageHandler.AddPackage();
+                                    handler.CardHandler.AddCard(cards[0], package);
+                                    handler.CardHandler.AddCard(cards[1], package);
+                                    handler.CardHandler.AddCard(cards[2], package);
+                                    handler.CardHandler.AddCard(cards[3], package);
+                                    handler.CardHandler.AddCard(cards[4], package);
                                     string createmessage = "Package created";
                                     response.sendResponse(201, createmessage, "");
                                 }
@@ -55,15 +49,15 @@ namespace MTCG.Http.Endpoints
                         }
                         else if (request.path == "/transactions/packages")
                         {
-                            user user = UserHandler.GetByUsername(request.identity);
+                            user user = handler.UserHandler.GetByUsername(request.identity);
                             if(user.coins > 0)
                             {
                                 user.coins -= 5;
-                                UserHandler.ChangeCoins(user);
-                                packages package = PackageHandler.GetUnsoldPackage();
+                                handler.UserHandler.ChangeCoins(user);
+                                packages package = handler.PackageHandler.GetUnsoldPackage();
                                 if (package != null)
                                 {
-                                    CardHandler.AddOwner(user, package);
+                                    handler.CardHandler.AddOwner(user, package);
                                     string createmessage = "Package sold";
                                     response.sendResponse(201, createmessage, "");
                                 }

@@ -14,11 +14,8 @@ namespace MTCG.Http.Endpoints
 {
     public class userendpoint
     {
-        public userendpoint(httprequest request, httpresponse response)
+        public userendpoint(httprequest request, httpresponse response, DataHandlers handler)
         {
-            
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            UserHandler handler = new UserHandler(UserRepository);
             if (request.content != null)
             {
                 try
@@ -33,7 +30,7 @@ namespace MTCG.Http.Endpoints
                                 try
                                 {
 
-                                    handler.AddUser(user);
+                                    handler.UserHandler.AddUser(user);
                                     string createmessage = "User created";
                                     response.sendResponse(201, createmessage, "");
                                 }
@@ -52,7 +49,7 @@ namespace MTCG.Http.Endpoints
                         {
                             if (user != null)
                             {
-                                user savedUser = handler.GetByUsername(user.username);
+                                user savedUser = handler.UserHandler.GetByUsername(user.username);
                                 if (savedUser != null)
                                 {
                                     bool passwortEqual = false;
@@ -87,8 +84,8 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path.Contains(request.identity))
                         {
-                            user userinfo = handler.GetByUsername(request.identity);
-                            handler.UpdateUserInfo(userinfo, user.username, user.bio, user.image);
+                            user userinfo = handler.UserHandler.GetByUsername(request.identity);
+                            handler.UserHandler.UpdateUserInfo(userinfo, user.username, user.bio, user.image);
                             response.sendResponse(202, "Userdata updated", "");
                         }
                         else
@@ -100,7 +97,7 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path.Contains(request.identity))
                         {
-                            user userinfo = handler.GetByUsername(request.identity);
+                            user userinfo = handler.UserHandler.GetByUsername(request.identity);
                             response.sendResponse(200, "OK", "");
                             Console.WriteLine("Name: " + userinfo.username);
                             Console.WriteLine("Coins: " + userinfo.coins);

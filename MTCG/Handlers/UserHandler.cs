@@ -35,6 +35,10 @@ namespace MTCG.Handlers
         {
             repository.UpdateCoins(user);
         }
+        public void UpdateELO(user user)
+        {
+            repository.UpdateELO(user);
+        }
         public void RemoveUser(user user)
         {
             repository.Delete(user);

@@ -1,4 +1,5 @@
-﻿using MTCG.Http;
+﻿using MTCG.Handlers;
+using MTCG.Http;
 using MTCG.Http.Endpoints;
 using System.Net;
 using System.Net.Sockets;
@@ -15,33 +16,34 @@ while (true)
     using StreamReader reader = new StreamReader(clientSocket.GetStream());
     httprequest request = new httprequest(reader);
     httpresponse response = new httpresponse(writer);
-    if(request.path == "/users" || request.path == "/sessions" || request.path.Contains("/users"))
+    DataHandlers handler = new DataHandlers();
+    if (request.path == "/users" || request.path == "/sessions" || request.path.Contains("/users"))
     {
-        userendpoint userendpoint = new userendpoint(request, response);
+        userendpoint userendpoint = new userendpoint(request, response, handler);
     }
     else if(request.path == "/packages" || request.path == "/transactions/packages")
     {
-        packageendpoint packageendpoint = new packageendpoint(request, response);
+        packageendpoint packageendpoint = new packageendpoint(request, response,handler);
     }
     else if (request.path == "/cards")
     {
-        cardendpoint cardendpoint = new cardendpoint(request, response);
+        cardendpoint cardendpoint = new cardendpoint(request, response, handler);
     }
     else if (request.path == "/deck")
     {
-        deckendpoint deckendpoint = new deckendpoint(request, response);
+        deckendpoint deckendpoint = new deckendpoint(request, response, handler);
     }
     else if(request.path == "/stats"  || request.path == "/scoreboard")
     {
-        statusendpoint statusendpoint = new statusendpoint(request, response);
+        statusendpoint statusendpoint = new statusendpoint(request, response, handler);
     }
     else if(request.path == "/battles")
     {
-        Battleendpoint battleendpoint = new Battleendpoint(request, response);
+        Battleendpoint battleendpoint = new Battleendpoint(request, response, handler);
     }
     else if(request.path == "/tradings")
     {
-        tradingendpoint tradingendpoint = new tradingendpoint(request, response);
+        tradingendpoint tradingendpoint = new tradingendpoint(request, response, handler);
     }
     else {
         response.sendResponse(404, "Not Found", "");

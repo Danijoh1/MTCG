@@ -51,6 +51,27 @@ namespace MTCG.Repositories
             return stack;
         }
 
+        public card GetCardById(string id)
+        {
+            card card = new card();
+            card.id = id;
+
+            using IDbConnection connection = new NpgsqlConnection(connectionString);
+            using IDbCommand command = connection.CreateCommand();
+            connection.Open();
+            command.CommandText = @"SELECT name,damage FROM cards WHERE id=@id";
+            AddParameterWithValue(command, "id", DbType.Int32, id);
+            command.ExecuteNonQuery();
+
+            using (IDataReader reader = command.ExecuteReader())
+            while (reader.Read())
+            {
+                card.name = reader.GetString(1);
+                card.damage = reader.GetInt32(0);
+            }
+            return card;
+        }
+
         public void AddOwner(user user, packages package)
         {
             if (package.id == null)

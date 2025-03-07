@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MTCG.Handlers;
 
 namespace MTCG.Http.Endpoints
 {
     public class Battleendpoint
     {
-        public Battleendpoint(httprequest request, httpresponse response)
+        public Battleendpoint(httprequest request, httpresponse response, DataHandlers handler)
         {
             if (request.content != null)
             {

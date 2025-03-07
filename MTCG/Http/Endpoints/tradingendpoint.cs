@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MTCG.Handlers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MTCG.Http.Endpoints
 {
     public class tradingendpoint
     {
-        public tradingendpoint(httprequest request, httpresponse response)
+        public tradingendpoint(httprequest request, httpresponse response, DataHandlers handler)
         {
             if (request.content != null)
             {

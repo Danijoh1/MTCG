@@ -13,12 +13,8 @@ namespace MTCG.Http.Endpoints
 {
     public class deckendpoint
     {
-        public deckendpoint(httprequest request, httpresponse response)
+        public deckendpoint(httprequest request, httpresponse response, DataHandlers handler)
         {
-            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            UserHandler UserHandler = new UserHandler(UserRepository);
-            CardRepository CardRepository = new CardRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
-            CardHandler CardHandler = new CardHandler(CardRepository);
             if (request.content != null)
             {
                 try
@@ -27,24 +23,27 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.method == "GET")
                         {
-                            user user = UserHandler.GetByUsername(request.identity);
-                            CardHandler.GetDeck(user);
+                            user user = handler.UserHandler.GetByUsername(request.identity);
+                            handler.CardHandler.GetDeck(user);
                             response.sendResponse(200, "OK", "");
                             user.deck.ForEach(Console.WriteLine);
                         }
                         else if (request.method == "PUT")
                         {
-                            user user = UserHandler.GetByUsername(request.identity);
+                            user user = handler.UserHandler.GetByUsername(request.identity);
 
                                 List<string> cardstrings = JsonConvert.DeserializeObject<List<string>>(request.content);
-                                
-                                if (cardstrings.Count < 4)
+                                List<card> cards = null;
+                                if (cardstrings.Count < 4 && cardstrings != null)
                                 {
-                                    
-                                    CardHandler.AddToDeck(user, cards[0]);
-                                    CardHandler.AddToDeck(user, cards[1]);
-                                    CardHandler.AddToDeck(user, cards[2]);
-                                    CardHandler.AddToDeck(user, cards[3]);
+                                    for (int i = 0; i < cardstrings.Count; i++)
+                                    {
+                                        cards.Add(handler.CardHandler.GetCardById(cardstrings[i]));
+                                    }
+                                    handler.CardHandler.AddToDeck(user, cards[0]);
+                                    handler.CardHandler.AddToDeck(user, cards[1]);
+                                    handler.CardHandler.AddToDeck(user, cards[2]);
+                                    handler.CardHandler.AddToDeck(user, cards[3]);
                                     response.sendResponse(201, "Deck configured", "");
                                 }
                                 else
