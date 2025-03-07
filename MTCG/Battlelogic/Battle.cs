@@ -13,11 +13,11 @@ namespace MTCG.Battlelogic
             Fightlogic battlelogic = new Fightlogic();
             CurrentRound = 1;
             MaxRound = 100;
-            for (int i = 0; i != Player1.deck.playerdeck.Length;i++)
+            for (int i = 0; i != Player1.deck.playerdeck.Count; i++)
             {
                 Player1Battledeck.Add(Player1.deck.playerdeck[i]);
             }
-            for (int j = 0; j != Player2.deck.playerdeck.Length; j++)
+            for (int j = 0; j != Player2.deck.playerdeck.Count; j++)
             {
                 Player2Battledeck.Add(Player2.deck.playerdeck[j]);
             }

@@ -29,14 +29,14 @@ namespace MTCG.Repositories
             AddParameterWithValue(command, "elo", DbType.Int32, user.ELO);
             user.id = (int)(command.ExecuteScalar() ?? 0);
         }
-        public IEnumerable<user> GetScore()
+        public List<user> GetScore()
         {
             List<user> result = null;
 
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = @"SELECT name, elo FROM users";
+            command.CommandText = @"SELECT name, elo FROM users ORDER BY ELO DESC";
 
             using (IDataReader reader = command.ExecuteReader())
                 while (reader.Read())

@@ -23,6 +23,10 @@ namespace MTCG.Handlers
         {
             repository.UpdateUserInfo(user, name,bio,image);
         }
+        public List<user> GetScore()
+        {
+            return repository.GetScore();
+        }
         public user GetByUsername(string name)
         {
            return repository.GetByUsername(name);

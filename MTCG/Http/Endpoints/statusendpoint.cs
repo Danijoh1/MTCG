@@ -1,4 +1,7 @@
 ﻿using Newtonsoft.Json;
+using MTCG.Handlers;
+using MTCG.Models;
+using MTCG.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,9 @@ namespace MTCG.Http.Endpoints
     public class statusendpoint
     {
         public statusendpoint(httprequest request, httpresponse response)
-        { 
+        {
+            UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtcgdb");
+            UserHandler UserHandler = new UserHandler(UserRepository);
             if (request.content != null)
             {
                 try
@@ -19,10 +24,16 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path == "/stats")
                         {
-                             
+                            user user = UserHandler.GetByUsername(request.identity);
+                            response.sendResponse(200, "OK", "");
+                            Console.WriteLine("ELO: " + user.ELO);
+                            Console.WriteLine("Battles fought: " + user.battlesFought);
                         }
                         else if (request.path == "/scoreboard")
                         {
+                            List<user> list = UserHandler.GetScore();
+                            response.sendResponse(200, "OK", "");
+                            list.ForEach(Console.WriteLine);
 
                         }
                     }

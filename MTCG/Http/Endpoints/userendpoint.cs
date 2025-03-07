@@ -81,20 +81,21 @@ namespace MTCG.Http.Endpoints
                                 }
                             }
                         }
-                           
+
                     }
-                    else if(request.method == "PUT")
+                    else if (request.method == "PUT")
                     {
                         if (request.path.Contains(request.identity))
                         {
                             user userinfo = handler.GetByUsername(request.identity);
-                            handler.UpdateUserInfo(userinfo,user.username,user.bio,user.image);
+                            handler.UpdateUserInfo(userinfo, user.username, user.bio, user.image);
                             response.sendResponse(202, "Userdata updated", "");
                         }
                         else
                         {
                             response.sendResponse(403, "Forbidden", "");
                         }
+                    }
                     else if (request.method == "GET")
                     {
                         if (request.path.Contains(request.identity))
