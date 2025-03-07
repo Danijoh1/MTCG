@@ -38,8 +38,9 @@ namespace MTCG.Http.Endpoints
 
                                 List<string> cardstrings = JsonConvert.DeserializeObject<List<string>>(request.content);
                                 
-                                if (cards.Count < 4)
+                                if (cardstrings.Count < 4)
                                 {
+                                    
                                     CardHandler.AddToDeck(user, cards[0]);
                                     CardHandler.AddToDeck(user, cards[1]);
                                     CardHandler.AddToDeck(user, cards[2]);
