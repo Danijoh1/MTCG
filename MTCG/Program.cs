@@ -39,7 +39,7 @@ while (true)
         {
             statusendpoint statusendpoint = new statusendpoint(request, response, handler);
         }
-        /*
+        
         else if (request.path == "/battles")
         {
             Battleendpoint battleendpoint = new Battleendpoint(request, response, handler);
@@ -47,7 +47,7 @@ while (true)
         else if (request.path == "/tradings")
         {
             tradingendpoint tradingendpoint = new tradingendpoint(request, response, handler);
-        }*/
+        }
         else
         {
             response.sendResponse(404, "Not Found", "");
