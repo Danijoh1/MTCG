@@ -11,12 +11,13 @@ var httpserver = new httpserver(IPAddress.Loopback, 10001);
 httpserver.Start();
 while (true)
 {
+        ThreadPool.QueueUserWorkItem(delegate { 
         TcpClient clientSocket = httpserver.AcceptClient();
         using StreamWriter writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
         using StreamReader reader = new StreamReader(clientSocket.GetStream());
         httprequest request = new httprequest(reader);
         httpresponse response = new httpresponse(writer);
-        DataHandlers handler = new DataHandlers();
+        DatabaseHandlers handler = new DatabaseHandlers();
         if (request.path == "/users" || request.path == "/sessions" || request.path.Contains("/users"))
         {
             userendpoint userendpoint = new userendpoint(request, response, handler);
@@ -49,4 +50,6 @@ while (true)
         {
             response.sendResponse(404, "Not Found", "");
         }
+            Thread.Sleep(1000);
+        });
 }

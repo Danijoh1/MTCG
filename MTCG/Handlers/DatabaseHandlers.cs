@@ -13,9 +13,9 @@ using System.Data;
 
 namespace MTCG.Handlers
 {
-    public class DataHandlers
+    public class DatabaseHandlers
     {
-        public DataHandlers() 
+        public DatabaseHandlers() 
         {
             PackageRepository PackageRepository = new PackageRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             PackageHandler PackageHandler = new PackageHandler(PackageRepository);

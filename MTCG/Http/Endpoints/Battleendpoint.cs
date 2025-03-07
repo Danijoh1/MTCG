@@ -5,7 +5,7 @@ namespace MTCG.Http.Endpoints
 {
     public class Battleendpoint
     {
-        public Battleendpoint(httprequest request, httpresponse response, DataHandlers handler)
+        public Battleendpoint(httprequest request, httpresponse response, DatabaseHandlers handler)
         {
             if (request.content != null)
             {

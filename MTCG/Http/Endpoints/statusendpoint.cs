@@ -12,7 +12,7 @@ namespace MTCG.Http.Endpoints
 {
     public class statusendpoint
     {
-        public statusendpoint(httprequest request, httpresponse response, DataHandlers handler)
+        public statusendpoint(httprequest request, httpresponse response, DatabaseHandlers handler)
         {
             if (request.content != null)
             {

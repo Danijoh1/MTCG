@@ -10,7 +10,7 @@ namespace MTCG.Http.Endpoints
 {
     public class tradingendpoint
     {
-        public tradingendpoint(httprequest request, httpresponse response, DataHandlers handler)
+        public tradingendpoint(httprequest request, httpresponse response, DatabaseHandlers handler)
         {
             if (request.content != null)
             {

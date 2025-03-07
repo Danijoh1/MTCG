@@ -6,7 +6,7 @@ namespace MTCG.Http.Endpoints
 {
     public class cardendpoint
     {
-        public cardendpoint(httprequest request, httpresponse response, DataHandlers handler)
+        public cardendpoint(httprequest request, httpresponse response, DatabaseHandlers handler)
         {
             if (request.content != null)
             {

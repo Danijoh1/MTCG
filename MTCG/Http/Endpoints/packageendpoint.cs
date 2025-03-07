@@ -13,7 +13,7 @@ namespace MTCG.Http.Endpoints
 {
     public class packageendpoint
     {
-        public packageendpoint(httprequest request, httpresponse response, DataHandlers handler)
+        public packageendpoint(httprequest request, httpresponse response, DatabaseHandlers handler)
         {
             if (request.content != null)
             {
