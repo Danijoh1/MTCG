@@ -19,20 +19,18 @@ namespace MTCG.Http.Endpoints
             {
                 try
                 {
+                    user user = handler.UserHandler.GetByUsername(request.identity);
                     if (request.identity != null)
                     {
                         if (request.method == "GET")
                         {
-                            user user = handler.UserHandler.GetByUsername(request.identity);
                             handler.CardHandler.GetDeck(user);
                             string json = JsonConvert.SerializeObject(user.deck);
                             response.sendResponse(200, "OK", json);
                         }
                         else if (request.method == "PUT")
                         {
-                            user user = handler.UserHandler.GetByUsername(request.identity);
-
-                                List<string> cardstrings = JsonConvert.DeserializeObject<List<string>>(request.content);
+                            List<string> cardstrings = JsonConvert.DeserializeObject<List<string>>(request.content);
                                 List<card> cards = null;
                                 if (cardstrings.Count < 4 && cardstrings != null)
                                 {

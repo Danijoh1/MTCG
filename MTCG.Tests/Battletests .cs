@@ -8,203 +8,220 @@ namespace MTCG.Tests
         [SetUp]
         public void Setup()
         {
+        }
+
+        [Test]
+        public void Player2_wins_battle()
+        {
+            //Arrange
+            Battlerules testbattle = new Battlerules();
             user Player1 = new user();
             user Player2 = new user();
-            card card1Player1 = new monstercard("test1", "Test1", 5);
-            card card2Player1 = new card();
-            card card3Player1 = new card();
-            card card4Player1 = new card();
-            card card1Player2 = new monstercard("test2", "Test1", 5);
-            card card2Player2 = new card();
-            card card3Player2 = new card();
-            card card4Player2 = new card();
-
-
-        }
-
-        [Test]
-        public void Compare_Cards_Damage_ReturnWinner()
-        {
-
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1","Test1",5);
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 5);
+            card card2Player1 = new monstercard("1", "Test1", 5);
+            card card3Player1 = new monstercard("1", "Test1", 5);
+            card card4Player1 = new monstercard("1", "Test1", 5);
+            card card1Player2 = new monstercard("2", "Test2", 10);
+            card card2Player2 = new monstercard("2", "Test2", 10);
+            card card3Player2 = new monstercard("2", "Test2", 10);
+            card card4Player2 = new monstercard("2", "Test2", 10);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
+            //Act
+            string ?winner = testbattle.Battle(Player1, Player2);
+            //Assert
+            Assert.That(Equals(winner, Player2.username));
             
-            card card2 = new monstercard("2","Test2",10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card2));
-            
         }
         [Test]
-        public void Compare_Monster_with_Spellcard()
+        public void Player1_wins_battle()
         {
+
             //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Test1", 5);
-
-            card card2 = new spellcard("2", "Test2", 10);
+            Battlerules testbattle = new Battlerules();
+            user Player1 = new user();
+            user Player2 = new user();
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 10);
+            card card2Player1 = new monstercard("1", "Test1", 10);
+            card card3Player1 = new monstercard("1", "Test1", 10);
+            card card4Player1 = new monstercard("1", "Test1", 10);
+            card card1Player2 = new monstercard("2", "Test2", 5);
+            card card2Player2 = new monstercard("2", "Test2", 5);
+            card card3Player2 = new monstercard("2", "Test2", 5);
+            card card4Player2 = new monstercard("2", "Test2", 5);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
             //Act
-            card winner = battle.Fight(card1, card2);
-
+            string ?winner = testbattle.Battle(Player1, Player2);
             //Assert
-            Assert.That(Equals(winner, card2));
+            Assert.That(Equals(winner, Player1.username));
+
         }
         [Test]
-        public void Compare_Fire_with_Water_Card()
+        public void Draw()
         {
             //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "FireTest1", 5);
-
-            card card2 = new spellcard("2", "WaterTest2", 10);
+            Battlerules testbattle = new Battlerules();
+            user Player1 = new user();
+            user Player2 = new user();
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 5);
+            card card2Player1 = new monstercard("1", "Test1", 5);
+            card card3Player1 = new monstercard("1", "Test1", 5);
+            card card4Player1 = new monstercard("1", "Test1", 5);
+            card card1Player2 = new monstercard("2", "Test2", 5);
+            card card2Player2 = new monstercard("2", "Test2", 5);
+            card card3Player2 = new monstercard("2", "Test2", 5);
+            card card4Player2 = new monstercard("2", "Test2", 5);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
             //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card2));
-        }
-        [Test]
-        public void Compare_Water_with_Fire_Card()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "WaterTest1", 5);
-
-            card card2 = new spellcard("2", "FireTest2", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card1));
-        }
-        [Test]
-        public void Compare_Water_with_Normal_Card()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "WaterTest1", 5);
-
-            card card2 = new spellcard("2", "Test2", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card2));
-        }
-        [Test]
-        public void Compare_Normal_with_Fire_Card()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Test1", 5);
-
-            card card2 = new spellcard("2", "FireTest2", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card2));
-        }
-        [Test]
-        public void Compare_Cards_with_Equal_Damage()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Test1", 5);
-
-            card card2 = new spellcard("2", "Test2", 5);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
+            string ?winner = testbattle.Battle(Player1, Player2);
             //Assert
             Assert.That(Equals(winner, null));
         }
         [Test]
-        public void Compare_Monstercards_with_effective_Elements()
+        public void Player2_gains_ELO()
         {
             //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "WaterTest1", 5);
-
-            card card2 = new monstercard("2", "FireTest2", 10);
+            Battlerules testbattle = new Battlerules();
+            user Player1 = new user();
+            user Player2 = new user();
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 5);
+            card card2Player1 = new monstercard("1", "Test1", 5);
+            card card3Player1 = new monstercard("1", "Test1", 5);
+            card card4Player1 = new monstercard("1", "Test1", 5);
+            card card1Player2 = new monstercard("2", "Test2", 10);
+            card card2Player2 = new monstercard("2", "Test2", 10);
+            card card3Player2 = new monstercard("2", "Test2", 10);
+            card card4Player2 = new monstercard("2", "Test2", 10);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
             //Act
-            card winner = battle.Fight(card1, card2);
-
+            string ?winner = testbattle.Battle(Player1, Player2);
+            testbattle.BattleWon(Player1, Player2,winner);
             //Assert
-            Assert.That(Equals(winner, card2));
+            Assert.That(Equals(Player2.ELO, 103));
+
         }
         [Test]
-        public void Check_Goblins_with_Dragons()
+        public void Player1_gains_ELO()
         {
             //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "WaterGoblin", 10);
-
-            card card2 = new monstercard("2", "Dragon", 5);
+            Battlerules testbattle = new Battlerules();
+            user Player1 = new user();
+            user Player2 = new user();
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 10);
+            card card2Player1 = new monstercard("1", "Test1", 10);
+            card card3Player1 = new monstercard("1", "Test1", 10);
+            card card4Player1 = new monstercard("1", "Test1", 10);
+            card card1Player2 = new monstercard("2", "Test2", 5);
+            card card2Player2 = new monstercard("2", "Test2", 5);
+            card card3Player2 = new monstercard("2", "Test2", 5);
+            card card4Player2 = new monstercard("2", "Test2", 5);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
             //Act
-            card winner = battle.Fight(card1, card2);
-
+            string winner = testbattle.Battle(Player1, Player2);
+            testbattle.BattleWon(Player1, Player2, winner);
             //Assert
-            Assert.That(Equals(winner, card2));
+            Assert.That(Equals(Player1.ELO, 103));
+
         }
         [Test]
-        public void Check_FireElves_with_Dragons()
+        public void Nobody_gains_ELO()
         {
             //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "FireElve", 5);
-
-            card card2 = new monstercard("2", "Dragon", 10);
+            Battlerules testbattle = new Battlerules();
+            user Player1 = new user();
+            user Player2 = new user();
+            Player1.username = "Test1";
+            Player2.username = "Test2";
+            card card1Player1 = new monstercard("1", "Test1", 5);
+            card card2Player1 = new monstercard("1", "Test1", 5);
+            card card3Player1 = new monstercard("1", "Test1", 5);
+            card card4Player1 = new monstercard("1", "Test1", 5);
+            card card1Player2 = new monstercard("2", "Test2", 5);
+            card card2Player2 = new monstercard("2", "Test2", 5);
+            card card3Player2 = new monstercard("2", "Test2", 5);
+            card card4Player2 = new monstercard("2", "Test2", 5);
+            List<card> cardList1 = new List<card>();
+            List<card> cardList2 = new List<card>();
+            cardList1.Add(card1Player1);
+            cardList1.Add(card2Player1);
+            cardList1.Add(card3Player1);
+            cardList1.Add(card4Player1);
+            cardList2.Add(card1Player2);
+            cardList2.Add(card2Player2);
+            cardList2.Add(card3Player2);
+            cardList2.Add(card4Player2);
+            Player1.deck = cardList1;
+            Player2.deck = cardList2;
             //Act
-            card winner = battle.Fight(card1, card2);
-
+            string ?winner = testbattle.Battle(Player1, Player2);
             //Assert
-            Assert.That(Equals(winner, card1));
-        }
-        [Test]
-        public void Check_Wizzards_with_Orks()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Wizzard", 5);
-
-            card card2 = new monstercard("2", "Ork", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
+            testbattle.BattleWon(Player1, Player2, winner);
             //Assert
-            Assert.That(Equals(winner, card1));
-        }
-        [Test]
-        public void Check_Kraken_with_Spells()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Kraken", 5);
-
-            card card2 = new spellcard("2", "Spell", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card1));
-        }
-        [Test]
-        public void Check_Knights_with_Waterspells()
-        {
-            //Arrange
-            Fightlogic battle = new Fightlogic();
-            card card1 = new monstercard("1", "Knight", 5);
-
-            card card2 = new spellcard("2", "Waterspell", 10);
-            //Act
-            card winner = battle.Fight(card1, card2);
-
-            //Assert
-            Assert.That(Equals(winner, card2));
+            Assert.That(Equals(Player1.ELO, 100)&&Equals(Player2.ELO,100));
         }
     }
 }

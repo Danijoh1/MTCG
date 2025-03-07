@@ -1,6 +1,7 @@
 ﻿using MTCG.Handlers;
 using MTCG.Http;
 using MTCG.Http.Endpoints;
+using MTCG.Repositories;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection.PortableExecutable;
@@ -15,9 +16,9 @@ while (true)
         TcpClient clientSocket = httpserver.AcceptClient();
         using StreamWriter writer = new StreamWriter(clientSocket.GetStream()) { AutoFlush = true };
         using StreamReader reader = new StreamReader(clientSocket.GetStream());
+        DatabaseHandlers handler = new DatabaseHandlers();
         httprequest request = new httprequest(reader);
         httpresponse response = new httpresponse(writer);
-        DatabaseHandlers handler = new DatabaseHandlers();
         if (request.path == "/users" || request.path == "/sessions" || request.path.Contains("/users"))
         {
             userendpoint userendpoint = new userendpoint(request, response, handler);
@@ -38,6 +39,7 @@ while (true)
         {
             statusendpoint statusendpoint = new statusendpoint(request, response, handler);
         }
+        /*
         else if (request.path == "/battles")
         {
             Battleendpoint battleendpoint = new Battleendpoint(request, response, handler);
@@ -45,7 +47,7 @@ while (true)
         else if (request.path == "/tradings")
         {
             tradingendpoint tradingendpoint = new tradingendpoint(request, response, handler);
-        }
+        }*/
         else
         {
             response.sendResponse(404, "Not Found", "");

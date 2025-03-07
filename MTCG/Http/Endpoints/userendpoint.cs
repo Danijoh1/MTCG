@@ -20,17 +20,16 @@ namespace MTCG.Http.Endpoints
             {
                 try
                 {
-                    user user = JsonConvert.DeserializeObject<user>(request.content);
+                    user requestedUser = JsonConvert.DeserializeObject<user>(request.content);
                     if (request.method == "POST")
                     {
                         if (request.path == "/users")
                         {
-                            if (user != null)
+                            if (requestedUser != null)
                             {
                                 try
                                 {
-
-                                    handler.UserHandler.AddUser(user);
+                                    handler.UserHandler.AddUser(requestedUser);
                                     string createmessage = "User created";
                                     response.sendResponse(201, createmessage, "");
                                 }
@@ -47,13 +46,13 @@ namespace MTCG.Http.Endpoints
                         }
                         else if (request.path == "/sessions")
                         {
-                            if (user != null)
+                            if (requestedUser != null)
                             {
-                                user savedUser = handler.UserHandler.GetByUsername(user.username);
+                                user savedUser = handler.UserHandler.GetByUsername(requestedUser.username);
                                 if (savedUser != null)
                                 {
                                     bool passwortEqual = false;
-                                    if (user.password == savedUser.password)
+                                    if (requestedUser.password == savedUser.password)
                                     {
                                         passwortEqual = true;
                                     }
@@ -84,8 +83,7 @@ namespace MTCG.Http.Endpoints
                     {
                         if (request.path.Contains(request.identity))
                         {
-                            user userinfo = handler.UserHandler.GetByUsername(request.identity);
-                            handler.UserHandler.UpdateUserInfo(userinfo, user.username, user.bio, user.image);
+                            handler.UserHandler.UpdateUserInfo(requestedUser);
                             response.sendResponse(202, "Userdata updated", "");
                         }
                         else

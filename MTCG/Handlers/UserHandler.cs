@@ -19,9 +19,9 @@ namespace MTCG.Handlers
         {
             repository.Add(user);
         }
-        public void UpdateUserInfo(user user,string name, string bio, string image)
+        public void UpdateUserInfo(user user)
         {
-            repository.UpdateUserInfo(user, name,bio,image);
+            repository.UpdateUserInfo(user);
         }
         public List<user> GetScore()
         {

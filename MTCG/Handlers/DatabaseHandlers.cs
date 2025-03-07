@@ -24,11 +24,11 @@ namespace MTCG.Handlers
             UserRepository UserRepository = new UserRepository("Host=localhost;Username=user;Password=password;Database=mtgcdb");
             UserHandler userHandler = new UserHandler(UserRepository);
         }
-        public CardRepository CardRepository { get; set; }
         public CardHandler CardHandler { get; set; }
-        public UserRepository UserRepository { get; set;}
         public UserHandler UserHandler { get; set; }
-        public PackageRepository PackageRepository { get; set; }
         public PackageHandler PackageHandler { get; set; }
+        public PackageRepository PackageRepository { get; set; }
+        public CardRepository CardRepository {  get; set; }
+        public UserRepository UserRepository { get; set; }
     }
 }

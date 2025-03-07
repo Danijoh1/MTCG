@@ -17,6 +17,8 @@ namespace MTCG.Repositories
 
         public void Add(user user )
         {
+            if (user.username == null)
+                throw new ArgumentException("Username must not be null");
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
@@ -28,8 +30,6 @@ namespace MTCG.Repositories
             AddParameterWithValue(command, "coins", DbType.Int32, user.coins);
             AddParameterWithValue(command, "elo", DbType.Int32, user.ELO);
             AddParameterWithValue(command, "battles", DbType.Int32, 0);
-
-            user.id = (int)(command.ExecuteScalar() ?? 0);
         }
         public List<user> GetScore()
         {
@@ -52,7 +52,7 @@ namespace MTCG.Repositories
             return result;
         }
 
-        public user? GetByUsername(string name)
+        public user GetByUsername(string name)
         {
             if (name == null)
                 throw new ArgumentException("Username must not be null");
@@ -78,7 +78,7 @@ namespace MTCG.Repositories
             return null;
         }
 
-        public user? GetStatsByUsername(string name)
+        public user GetStatsByUsername(string name)
         {
             if (name == null)
                 throw new ArgumentException("Username must not be null");
@@ -101,7 +101,7 @@ namespace MTCG.Repositories
             return null;
         }
 
-        public user? GetUserInfoByUsername(string name)
+        public user GetUserInfoByUsername(string name)
         {
             if (name == null)
                 throw new ArgumentException("Username must not be null");
@@ -128,7 +128,7 @@ namespace MTCG.Repositories
             return null;
         }
 
-        public void UpdateUserInfo(user user, string name, string bio, string image)
+        public void UpdateUserInfo(user user)
         {
             if (user.id == null)
                 throw new ArgumentException("Id must not be null");
@@ -136,10 +136,9 @@ namespace MTCG.Repositories
             using IDbConnection connection = new NpgsqlConnection(connectionString);
             using IDbCommand command = connection.CreateCommand();
             connection.Open();
-            command.CommandText = "UPDATE users SET name=@name, bio=@bio, image=@image  WHERE id=@id";
-            AddParameterWithValue(command, "name", DbType.String, name);
-            AddParameterWithValue(command, "bio", DbType.String, bio);
-            AddParameterWithValue(command, "image", DbType.String, image);
+            command.CommandText = "UPDATE users SET bio=@bio, image=@image  WHERE id=@id";
+            AddParameterWithValue(command, "bio", DbType.String, user.bio);
+            AddParameterWithValue(command, "image", DbType.String, user.image);
             AddParameterWithValue(command, "id", DbType.Int32, user.id);
             command.ExecuteNonQuery();
         }

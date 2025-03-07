@@ -1,6 +1,6 @@
 docker run -d --name mtcgDatabase -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
 docker exec -it mtcgDatabase psql -U user
-CREATE DATABASE mtcgDB;
+CREATE DATABASE mtgcDB;
 \c mtgcdb
 
 CREATE TABLE IF NOT EXISTS packages (

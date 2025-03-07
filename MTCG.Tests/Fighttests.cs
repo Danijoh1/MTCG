@@ -194,5 +194,20 @@ namespace MTCG.Tests
             //Assert
             Assert.That(Equals(winner, card2));
         }
+        [Test]
+        public void Reverse_Order_still_works()
+        {
+            //Arrange
+            Fightlogic battle = new Fightlogic();
+            card card1 = new spellcard("2", "Waterspell", 10);
+
+            card card2 = new monstercard("1", "Knight", 5);
+
+            //Act
+            card winner = battle.Fight(card1, card2);
+
+            //Assert
+            Assert.That(Equals(winner, card1));
+        }
     }
 }
